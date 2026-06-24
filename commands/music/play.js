@@ -1,26 +1,31 @@
 const {SlashCommandBuilder} = require('discord.js');
-const { getVoiceConnection, createAudioPlayer } = require('@discordjs/voice');
-const play = require('play-dl');
-const YoutubeVideo = require('../../utils/YouTubeVideo').default;
-const {createAudioResource} = require('@discordjs/voice')
+const { useMainPlayer } = require('@discord-player');
 
-const link = YoutubeVideo;
-const player = createAudioPlayer();
 
+const player = useMainPlayer()
 module.exports={
 
 	data: new SlashCommandBuilder()
-		.setName('play')
-		.setDescription('toca a musica do usuario'),
-    
+		.setName('toca')
+		.setDescription('comando responsável por tocar musica')
+		.addStringOption((option) =>
+
+			option
+				.setName('musica')
+				.setDescription('nome da musica')
+				.setRequired(true),
+		),
+		
 	async execute(interaction){
 
-        const connection = getVoiceConnection(interaction.guild.id)
-        if (!connection) {
-			return interaction.reply("A conexão não rolo! Use '/brota' primeiro.");
-		};
-		connection.subscribe(player);
+		const player = interaction.voice.player;
+		const voiceChannel = interaction.member.voice.channel;
+		try {
 
-        await interaction.reply("tocando musica");
-	    }
+			await player.play(voiceChannel, query);
+		} catch (err) {
+			console.error(`aconteceu algo erro com o play: ${err}`);
+			
+		}
+	}
 }
