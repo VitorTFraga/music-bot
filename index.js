@@ -3,11 +3,33 @@ const fs = require('fs')
 const path = require('path')
 
 const dotenv = require('dotenv')
+const { Player } = require('discord-player')
+const { DefaultExtractors } = require('@discord-player/extractor')
+const ffmpegStatic = require("ffmpeg-static")
 
 dotenv.config()
 const {TOKEN, CLIENT_ID, GUILD_ID} = process.env
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates] });
+
+const player = new Player(client, {
+
+	connectionTimeout: 60000,
+	ffmpegPath: ffmpegStatic || undefined
+})
+
+async function setUpExtractors(){
+
+	try {
+		
+		await player.extractors.loadMulti(DefaultExtractors)
+	} catch (err) {
+		console.error(`erro ao carregar extratores: ${err}`);
+		
+	}
+}
+
+setUpExtractors();
 
 client.once(Events.ClientReady, (readyClient) => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
