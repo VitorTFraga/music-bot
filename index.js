@@ -7,6 +7,8 @@ const { Player } = require('discord-player')
 const { DefaultExtractors } = require('@discord-player/extractor')
 const ffmpegStatic = require("ffmpeg-static")
 
+const {setUpPlayerEvents} = require("./events/playerEvents")
+
 dotenv.config()
 const {TOKEN, CLIENT_ID, GUILD_ID} = process.env
 
@@ -74,19 +76,19 @@ async function bootStrap(){
 	}
 
 	const eventPath = path.join(__dirname, 'events');
-	const eventFolder = fs.readdirSync(eventPath);
+	const eventFile = fs.readdirSync(eventPath).filter(file => file.endsWith(".js"));
 
-	for(const file of eventFolder){
+	for(const file of eventFile){
 
 		const filePath = path.join(eventPath, file);
 		const event = require(filePath)
 
 		if(event.once){
 
-			client.once(event.name, (...args)=> event.execute(args))
+			client.once(event.name, (...args)=> event.execute(...args))
 		}else{
 
-			client.on(event.name, (...args)=> event.execute(args))
+			client.on(event.name, (...args)=> event.execute(...args))
 		}
 	}
 

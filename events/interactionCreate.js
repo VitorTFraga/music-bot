@@ -1,4 +1,5 @@
 const { Events, MessageFlags } = require('discord.js');
+const {useMainPlayer} = require('discord-player');
 
 module.exports = {
 	name: Events.InteractionCreate,
@@ -12,7 +13,7 @@ module.exports = {
 			return;
 		}
 
-		const player = interaction.client.player;
+		const player = useMainPlayer();
 		const context = { guild: interaction.guild };
 
 		try {
