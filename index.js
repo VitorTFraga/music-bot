@@ -3,64 +3,96 @@ const fs = require('fs')
 const path = require('path')
 
 const dotenv = require('dotenv')
+const { Player } = require('discord-player')
+const { DefaultExtractors } = require('@discord-player/extractor')
+const ffmpegStatic = require("ffmpeg-static")
+
+const {setUpPlayerEvents} = require("./events/playerEvents")
 
 dotenv.config()
 const {TOKEN, CLIENT_ID, GUILD_ID} = process.env
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates] });
 
-client.once(Events.ClientReady, (readyClient) => {
-	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
-});
+const player = new Player(client, {
 
-client.commands = new Collection()
+	connectionTimeout: 60000,
+	ffmpegPath: ffmpegStatic || undefined
+})
 
-const foldersPath = path.join(__dirname, 'commands');
-const commandFolder = fs.readdirSync(foldersPath)
+async function setUpExtractors(){
 
-for(const folder of commandFolder){
-
-	const commandPath = path.join(foldersPath, folder)
-	const commandFile = fs.readdirSync(commandPath).filter((file)=>file.endsWith('js'))
-
-	for(const file of commandFile){
-		const filePath = path.join(commandPath, file)
-		const command = require(filePath)
-		if('data'in command && 'execute'in command){
-		client.commands.set(command.data.name, command)
-	} else{
-		console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+	try {
+		
+		await player.extractors.loadMulti(DefaultExtractors)
+	} catch (err) {
+		console.error(`erro ao carregar extratores: ${err}`);
 		
 	}
-	}	
 }
 
-client.login(TOKEN);
+process.on("unhandledRejection", (reason)=>{
+	const isAbort = 
+		reason?.name === 'AbortError' || 
+        reason?.code === 'ABORT_ERR' || 
+        reason?.cause?.name === 'AbortError';
 
-client.on(Events.InteractionCreate, async (interaction) =>{
+	if(isAbort){
 
-	if(!interaction.isChatInputCommand()) return;
-	const command = interaction.client.commands.get(interaction.commandName);
-
-	if(!command){
-		console.error(`No command matching ${interaction.commandName} was found.`);
+		console.warn('[Voice] Operação abortada (timeout ou desconexão):', reason.message);
 		return
 	}
 
-	try {
-		await command.execute(interaction);
-	} catch (err) {
-		if(interaction.replied || interaction.deferred){
-			await interaction.followUp({
-				content: 'There was an error while executing this command!',
-				flags: MessageFlags.Ephemeral,
-			});
+	console.error('[Unhandled Rejection]', reason);
+})
+
+
+async function bootStrap(){
+
+	setUpPlayerEvents(player)
+	await setUpExtractors();
+
+	client.commands = new Collection()
+
+	const foldersPath = path.join(__dirname, 'commands');
+	const commandFolder = fs.readdirSync(foldersPath)
+
+	for(const folder of commandFolder){
+
+		const commandPath = path.join(foldersPath, folder)
+		const commandFile = fs.readdirSync(commandPath).filter((file)=>file.endsWith('js'))
+
+		for(const file of commandFile){
+			const filePath = path.join(commandPath, file)
+			const command = require(filePath)
+			if('data'in command && 'execute'in command){
+
+				client.commands.set(command.data.name, command)
+			} else{
+				console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+				
+			}
+		}	
+	}
+
+	const eventPath = path.join(__dirname, 'events');
+	const eventFile = fs.readdirSync(eventPath).filter(file => file.endsWith(".js"));
+
+	for(const file of eventFile){
+
+		const filePath = path.join(eventPath, file);
+		const event = require(filePath)
+
+		if(event.once){
+
+			client.once(event.name, (...args)=> event.execute(...args))
 		}else{
-			await interaction.reply({
-				content: 'There was an error while executing this command!',
-				flags: MessageFlags.Ephemeral,
-			})
+
+			client.on(event.name, (...args)=> event.execute(...args))
 		}
 	}
-	
-})
+
+	await client.login(TOKEN);
+}
+
+bootStrap()
