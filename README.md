@@ -1,12 +1,12 @@
 # Discord Music Bot 🎵
 
-A music bot project for Discord developed in JavaScript using the `discord.js` library. Currently in its initial development phase.
+A music bot project for Discord developed in JavaScript using the `discord.js` library.
 
 ## 🛠️ Technologies Used
 * [Node.js](https://nodejs.org/) - JavaScript runtime.
 * [discord.js](https://discord.js.org/) - Powerful library to interact with the Discord API.
 * [@discordjs/voice](https://github.com/discordjs/voice) - Implementation of the Discord Voice API.
-* [play-dl](https://play-dl.github.io/play-dl/) - Fast and robust YouTube and SoundCloud search/stream provider.
+* [discord-player](https://discord-player.js.org/docs) -  A robust framework for developing Discord Music bots.
 * [ffmpeg-static](https://ffmpeg.org) - Provides a static binary of ffmpeg for audio processing.
 
 ## 🚀 How to Run (Development)
@@ -31,7 +31,7 @@ A music bot project for Discord developed in JavaScript using the `discord.js` l
     node index.js
     ```
 
-**Status:** 🏗️ Work in Progress (Configuring Audio Player).
+**Status:** 🏗️ Work in Progress (Adding commands).
 
 ## 📧 Contact
 
