@@ -1,4 +1,4 @@
-const {SlashCommandBuilder} = require('discord.js');
+const {SlashCommandBuilder, PermissionsBitField} = require('discord.js');
 const {useMainPlayer} = require('discord-player');
 
 module.exports={
@@ -18,7 +18,7 @@ module.exports={
 
 		const player = useMainPlayer()
 		const voiceChannel = interaction.member.voice.channel;
-		const query = interaction.options.getString('song', true);
+		const query = interaction.options.getString('musica', true);
 
 		if(!voiceChannel) {
 			return interaction.reply(
@@ -32,6 +32,18 @@ module.exports={
 			);
 		}
 
+		if (
+			!interaction.guild.members.me
+			.permissionsIn(voiceChannel)
+			.has(PermissionsBitField.Flags.Speak)
+		) {
+			return interaction.reply(
+			'I do not have permission to speak in your voice channel!',
+			);
+		}
+
+		await interaction.deferReply()
+
 		try {
 
 			const result = await player.play(voiceChannel, query, {
@@ -41,7 +53,7 @@ module.exports={
 				},
 			});
 
-			return interaction.reply(
+			return interaction.editReply(
 
 				`${result.track.title} foi adicionada a playlist.`
 			)
