@@ -16,7 +16,7 @@ module.exports={
 		
 	async execute(interaction){
 
-		const player = useMainPlayer()
+		const player = useMainPlayer();
 		const voiceChannel = interaction.member.voice.channel;
 		const query = interaction.options.getString('musica', true);
 
@@ -31,6 +31,8 @@ module.exports={
 				'Eu não tenho permissão para acessar o seu canal de voz.',
 			);
 		}
+
+
 
 		if (
 			!interaction.guild.members.me
