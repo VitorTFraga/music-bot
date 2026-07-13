@@ -55,5 +55,8 @@ module.exports = {
 		player.events.on('audioTrackAdd', (queue, track) => {
 			notifyChannel(queue, `**${track.title}** adicionada à fila.`);
 		});
+		player.events.on('PlayerFinish', (queue, track) =>{
+			notifyChannel(queue, `**${track.title}** finalizado.`)
+		})
 	},
 };
