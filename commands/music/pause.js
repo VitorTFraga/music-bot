@@ -9,10 +9,27 @@ module.exports={
 
     async execute(interaction){
 
+        const voiceChannel = interaction.member.voice.channel;
+        const botConnection = interaction.guild.members.me.voice.channel;
         const timeLine = useTimeline({
 
             node: interaction.guild,
         })
+        
+
+        if (!botConnection) {
+            return interaction.reply({
+                content: "Eu não estou em nenhum canal de voz no momento.", 
+                flags: [MessageFlags.Ephemeral]    
+            });
+        }
+        if (botConnection !== voiceChannel) {
+
+            return interaction.reply({
+                content: "voce não tem permissão para trocar de música.",
+                flags: [MessageFlags.Ephemeral]
+            })
+        }
 
         if(!timeLine){
 
