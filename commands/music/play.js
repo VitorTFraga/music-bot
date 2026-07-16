@@ -1,10 +1,21 @@
 const {SlashCommandBuilder, PermissionsBitField} = require('discord.js');
 const {useMainPlayer} = require('discord-player');
 
+const NODE_OPTIONS = {
+
+	bufferingTimeout: 15000, 
+	leaveOnStop: true, 
+	leaveOnStopCooldown: 60000, 
+	leaveOnEnd: true, 
+	leaveOnEndCooldown: 15000, 
+	leaveOnEmpty: true, 
+	leaveOnEmptyCooldown: 300000, 
+	skipOnNoStream: true,
+}
 module.exports={
 
 	data: new SlashCommandBuilder()
-		.setName('toca')
+		.setName('tocar')
 		.setDescription('comando responsável por tocar musica')
 		.addStringOption((option) =>
 
@@ -52,6 +63,7 @@ module.exports={
 
 				nodeOptions: {
         			metadata: { channel: interaction.channel }, 
+					...NODE_OPTIONS,
 				},
 			});
 
