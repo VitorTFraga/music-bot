@@ -1,4 +1,4 @@
-const {SlashCommandBuilder} = require('discord.js')
+const {SlashCommandBuilder} = require('discord.js');
 
 module.exports={
 
@@ -8,6 +8,6 @@ module.exports={
 		
 	async execute(interaction){
 
-		await interaction.reply('!pong')
+		await interaction.reply('!pong');
 	}
-}
+};

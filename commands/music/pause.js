@@ -1,5 +1,5 @@
-const {SlashCommandBuilder} = require('discord.js')
-const {useTimeline} = require('discord-player')
+const {SlashCommandBuilder, MessageFlags} = require('discord.js');
+const {useTimeline} = require('discord-player');
 
 module.exports={
 
@@ -14,29 +14,29 @@ module.exports={
         const timeLine = useTimeline({
 
             node: interaction.guild,
-        })
+        });
         
 
         if (!botConnection) {
             return interaction.reply({
-                content: "Eu não estou em nenhum canal de voz no momento.", 
+                content: 'Eu não estou em nenhum canal de voz no momento.', 
                 flags: [MessageFlags.Ephemeral]    
             });
         }
         if (botConnection !== voiceChannel) {
 
             return interaction.reply({
-                content: "voce não tem permissão para trocar de música.",
+                content: 'voce não tem permissão para trocar de música.',
                 flags: [MessageFlags.Ephemeral]
-            })
+            });
         }
 
         if(!timeLine){
 
-            return interaction.reply('Este servidor não possui uma sessão de áudio ativa.')
+            return interaction.reply('Este servidor não possui uma sessão de áudio ativa.');
         }
 
-        const wasPaused = timeLine.paused
+        const wasPaused = timeLine.paused;
 
         try {
 
@@ -46,9 +46,9 @@ module.exports={
 
         } catch (err) {
 
-            console.error('erro ao trocar estado da muscia: ', err)
+            console.error('erro ao trocar estado da muscia: ', err);
             await interaction.reply('Ocorreu um erro ao tentar pausar/retomar a música.');
         }
 
     }
-}
+};

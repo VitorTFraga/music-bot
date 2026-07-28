@@ -6,7 +6,7 @@ class YoutubeVideo{
             throw new Error(`Can not initiate ${this.constructor.name} without data`);
         }
 
-        this.title = data.title || "sem titulo";
+        this.title = data.title || 'sem titulo';
         this.chapters = data.chapters || [];
         this.durationInSec = (data.duration < 0 ? 0 : data.duration) || 0;
         this.durationRaw = data.duration_raw || '0:00';
