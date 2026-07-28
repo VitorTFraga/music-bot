@@ -2,12 +2,20 @@
 
 A music bot project for Discord developed in JavaScript using the `discord.js` library. Currently in its initial development phase.
 
-## 🛠️ Technologies Used
-* [Node.js](https://nodejs.org/) - JavaScript runtime.
-* [discord.js](https://discord.js.org/) - Powerful library to interact with the Discord API.
-* [@discordjs/voice](https://github.com/discordjs/voice) - Implementation of the Discord Voice API.
-* [play-dl](https://play-dl.github.io/play-dl/) - Fast and robust YouTube and SoundCloud search/stream provider.
-* [ffmpeg-static](https://ffmpeg.org) - Provides a static binary of ffmpeg for audio processing.
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Tecnology |
+|--------|-----------|
+| library | discord.js + @discordjs/builders |
+| Audio Framework | discord-player + @discord-player/extractor |
+| Linting | ESLint 10 |
+| Runtime | Node.js 22 LTS |
+| Media & Protocols | mediaplex, @snazzah/davey |
+| Audio Converter | ffmpeg-static |
+
+---
 
 ## 🚀 How to Run (Development)
 1. **Clone the repository:**
@@ -31,7 +39,11 @@ A music bot project for Discord developed in JavaScript using the `discord.js` l
     node index.js
     ```
 
-**Status:** 🏗️ Work in Progress (Configuring Audio Player).
+---
+
+**Status:** 🏗️ Work in Progress (planning the server for hosting).
+
+---
 
 ## 📧 Contact
 
