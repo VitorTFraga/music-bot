@@ -14,14 +14,14 @@ module.exports={
 
         if(!queue){
 
-            return interaction.reply('Este servidor não possui uma sessão de música ativa.')
+            return interaction.reply('Este servidor não possui uma sessão de música ativa.');
         }
 
         if(!currenteSong){
 
-            return interaction.reply('Não tem música tocando no momento.')
+            return interaction.reply('Não tem música tocando no momento.');
         }
-        console.log(currenteSong.title)
-        return interaction.reply(`Esta tocando agora: ${currenteSong.title}`)
+        console.log(currenteSong.title);
+        return interaction.reply(`Esta tocando agora: ${currenteSong.title}`);
     }
-}
+};

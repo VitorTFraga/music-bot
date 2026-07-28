@@ -1,5 +1,5 @@
 const { useQueue, QueueRepeatMode } = require('discord-player');
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, MessageFlags } = require('discord.js');
 
 const label = {
 
@@ -7,7 +7,7 @@ const label = {
     'Track':'musica',
     'Queue': 'fila',
     'Autoplay': 'aleatorio'
-}
+};
 
 module.exports = {
 
@@ -42,12 +42,12 @@ module.exports = {
 
        const voiceChannel = interaction.member.voice.channel;
         const botConnection = interaction.guild.members.me.voice.channel;
-        const queue = useQueue(interaction.guild)
-        const loopMode = interaction.options.getNumber('modo')
+        const queue = useQueue(interaction.guild);
+        const loopMode = interaction.options.getNumber('modo');
 
         if (!botConnection) {
             return interaction.reply({
-                content: "Eu não estou em nenhum canal de voz no momento.", 
+                content: 'Eu não estou em nenhum canal de voz no momento.', 
                 flags: [MessageFlags.Ephemeral]    
             });
         }
@@ -55,14 +55,14 @@ module.exports = {
         if (botConnection !== voiceChannel) {
 
             return interaction.reply({
-                content: "voce não tem permissão para trocar de música.",
+                content: 'voce não tem permissão para trocar de música.',
                 flags: [MessageFlags.Ephemeral]
-            })
+            });
         }
 
         if (!queue) {
 
-            return interaction.reply('Este servidor não possui uma sessão de música ativa.')
+            return interaction.reply('Este servidor não possui uma sessão de música ativa.');
         }
 
         const textMode = {
@@ -71,7 +71,7 @@ module.exports = {
             [QueueRepeatMode.TRACK]: 'música',
             [QueueRepeatMode.QUEUE]: 'fila',
             [QueueRepeatMode.AUTOPLAY]: 'aleatório',
-        }
+        };
 
         try {
             
@@ -80,7 +80,7 @@ module.exports = {
             await interaction.reply(`modo de loop trocado para ${textMode[loopMode]}`);
         } catch (err) {
             console.error('erro ao usar o comando de loop: ', err);
-            return interaction.reply('erro ao usar o comando de loop.')
+            return interaction.reply('erro ao usar o comando de loop.');
         }
     }
-}
+};

@@ -1,6 +1,6 @@
-const {createAudioPlayer, NoSubscriberBehavior} = require('@discordjs/voice')
-const {search} = require('./utils/videoSeach.js')
-const {audioConverter} = require("./utils/audioExtractor.js")
+const {createAudioPlayer, NoSubscriberBehavior} = require('@discordjs/voice');
+const {search} = require('./utils/videoSeach.js');
+//const {audioConverter} = require('./utils/audioExtractor.js');
 
 
  const player = createAudioPlayer({
@@ -14,22 +14,22 @@ const {audioConverter} = require("./utils/audioExtractor.js")
 	
 	try {
 		
-		const music = await search("nome")
-
-		const resource = audioConverter(music.query)
-
-		return music
+		const music = await search(query);
 
 		if (!music) {
-			console.log('music not found')
-			return null
+			console.log('music not found');
+			return null;
 		}
 
+		//const resource = audioConverter(music.query);
+
+		return music;
+
 	} catch (err) {
-		console.error("player maneger error", err);
+		console.error('player maneger error', err);
 		
 	}
 }
 
 
-module.exports = {player, playMusic}
+module.exports = {player, playMusic};

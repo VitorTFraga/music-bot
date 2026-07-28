@@ -1,11 +1,11 @@
-const {SlashCommandBuilder} = require('discord.js')
-const {useMainPlayer} = require('discord-player')
+const {SlashCommandBuilder} = require('discord.js');
+const {useMainPlayer} = require('discord-player');
 
 const VOICE_NODE_OPTIONS ={
 
 	connectionTimeout: 60_000,
 	bufferingTimeout: 30_000,
-}
+};
 
 module.exports={
 
@@ -15,7 +15,7 @@ module.exports={
 		
 	async execute(interaction){
 
-        const player = useMainPlayer()
+        const player = useMainPlayer();
         const voiceChannel = interaction.member.voice.channel;
 
         
@@ -27,9 +27,9 @@ module.exports={
 			});
         }
 
-		await interaction.deferReply()
+		await interaction.deferReply();
 		try {
-			let queue = player.nodes.get(interaction.guild)
+			let queue = player.nodes.get(interaction.guild);
 
 			if(!queue){
 
@@ -37,19 +37,19 @@ module.exports={
 
 					...VOICE_NODE_OPTIONS,
 					metadata: interaction.channel,
-				})
+				});
 			}
 			
 			await queue.connect(voiceChannel,{
 				queue,
 				maxTime: VOICE_NODE_OPTIONS.connectionTimeout,
-			})
+			});
 
 			return interaction.editReply(`Entrei no canal **${voiceChannel.name}**.`);
 		} catch (err) {
 
-			console.error("erro ao tentar entrar no canal: ", err);
+			console.error('erro ao tentar entrar no canal: ', err);
 			return interaction.editReply('Não consegui conectar a tempo. Tente novamente. Houve um erro ao tentar entrar no canal de voz.');
 		}
 	}
-}
+};

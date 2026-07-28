@@ -11,7 +11,7 @@ const NODE_OPTIONS = {
 	leaveOnEmpty: true, 
 	leaveOnEmptyCooldown: 300000, 
 	skipOnNoStream: true,
-}
+};
 module.exports={
 
 	data: new SlashCommandBuilder()
@@ -55,7 +55,7 @@ module.exports={
 			);
 		}
 
-		await interaction.deferReply()
+		await interaction.deferReply();
 
 		try {
 
@@ -70,11 +70,11 @@ module.exports={
 			return interaction.editReply(
 
 				`${result.track.title} foi adicionada a playlist.`
-			)
+			);
 		} catch (err) {
 			console.error(`aconteceu algo erro com o play: ${err}`);
-			return interaction.reply("Deu algo de errado com a musica chama os dev!")
+			return interaction.reply('Deu algo de errado com a musica chama os dev!');
 			
 		}
 	}
-}
+};
